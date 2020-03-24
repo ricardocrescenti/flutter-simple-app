@@ -31,7 +31,7 @@ class SplashScreenPage extends StatefulWidget {
         : Text(standardApp.title, style: themeData.textTheme.body1))));
 
     return Scaffold(
-      backgroundColor: themeData.primaryColor,
+      backgroundColor: themeData.colorScheme.primary,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -68,7 +68,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     Future<String> futureSeconds = Future.delayed(Duration(seconds: widget.secondsAwait), () => null);
 
     Future.wait<String>([futureLoad, futureSeconds]).then((routeName) => Navigator.pushReplacementNamed(context, routeName[0]));
-    futureLoad.then((routeName) => Navigator.pushReplacementNamed(context, routeName));
   }
 
   @override
