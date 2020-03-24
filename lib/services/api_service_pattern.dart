@@ -9,6 +9,10 @@ abstract class ApiServicePattern extends Service {
   GraphQLClient get graphQL => _graphQL;
 
   ApiServicePattern(Module module) : super(module) {
+    _initializeDio();
+  }
+
+  _initializeDio() {
     dio.options.baseUrl = baseUrl;
     dio.options.headers.putIfAbsent('Accept', () => 'application/json');
     dio.interceptors.add(InterceptorsWrapper(

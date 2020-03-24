@@ -80,22 +80,25 @@ class GraphQLClient {
       await _futureLoadObjects;
     }
     
-    return await _post(GraphQLJsonBuilder.query(queryName), queries[queryName], args, fields);
+    return await _post(queryName, GraphQLJsonBuilder.query(queryName), queries[queryName], args, fields);
   }
   Future<Response<T>> mutation<T>(String mutationName, {Map<String, dynamic> args, List<dynamic> fields}) async {
     if (_futureLoadObjects != null) {
       await _futureLoadObjects;
     }
     
-    return await _post(GraphQLJsonBuilder.mutation(mutationName), mutations[mutationName], args, fields);
+    return await _post(mutationName, GraphQLJsonBuilder.mutation(mutationName), mutations[mutationName], args, fields);
   }
 
-  Future<Response<T>> _post<T>(GraphQLJsonBuilder graphQLBuilder, GraphQLObject graphQLObject, Map<String, dynamic> args, List<dynamic> fields) async {
+  Future<Response<T>> _post<T>(String dataName, GraphQLJsonBuilder graphQLBuilder, GraphQLObject graphQLObject, Map<String, dynamic> args, List<dynamic> fields) async {
     Map data = graphQLBuilder
       .args(args)
       .fields(fields ?? graphQLObject.graphQLFields())
       .toJson();
 
-    return await apiService.dio.post('graphql', data: data);
+    Response response = await apiService.dio.post('graphql', data: data);
+    response.data.data = (response.data.data.length > 0 ? response.data.data[dataName] : null);
+    
+    return response;
   }
 }
