@@ -15,7 +15,7 @@ class StandardApp extends StatefulWidget {
   final SplashScreenPage Function() splash;
   final Future<String> Function(BuildContext context) load;
   final String defaultRoute;
-  final List<Router> routes;
+  final List<RouterPattern> routes;
 
   StandardApp({
     @required this.title,
@@ -42,6 +42,10 @@ class StandardApp extends StatefulWidget {
     InheritedApp inheritedApp = context.dependOnInheritedWidgetOfExactType<InheritedApp>();
     return (inheritedApp != null ? inheritedApp.app : null);
   }
+
+  static pushRoute(BuildContext context, String route) {
+    return Navigator.of(context).pushNamed(route);
+  }
 }
 
 class _StandardApp extends State<StandardApp> {
@@ -51,8 +55,16 @@ class _StandardApp extends State<StandardApp> {
   void initState() {
     super.initState();
 
-    widget.routes.forEach((route) {
-      _routes[route.name] = route;
+    _loadRoutes(widget.routes);
+  }
+
+  _loadRoutes(List<RouterPattern> routes, {String parentUrl = ''}) {
+    routes.forEach((route) {
+      if (route is RouterGroup) {
+        _loadRoutes(route.routes, parentUrl: parentUrl + (parentUrl.length > 0 && route.name.length > 0 ? '/' : '') + route.name);
+      } else {
+        _routes[parentUrl + (parentUrl.length > 0 && route.name.length > 0 ? '/' : '') + route.name] = route;
+      }
     });
   }
 
