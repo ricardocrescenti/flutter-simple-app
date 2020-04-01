@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:simple_app/classes/inherited_app.dart';
+import 'package:simple_app/classes/router_observer.dart';
 import 'package:simple_app/simple_app.dart';
 import 'package:simple_app/widgets/splash_screen/splash_screen.dart';
 
@@ -16,6 +17,9 @@ class StandardApp extends StatefulWidget {
   final Future<String> Function(BuildContext context) load;
   final String defaultRoute;
   final List<RouterPattern> routes;
+
+  static Route _mainRoute;
+  static Route get mainRoute => _mainRoute;
 
   StandardApp({
     @required this.title,
@@ -41,10 +45,6 @@ class StandardApp extends StatefulWidget {
   static StandardApp of(BuildContext context) {
     InheritedApp inheritedApp = context.dependOnInheritedWidgetOfExactType<InheritedApp>();
     return (inheritedApp != null ? inheritedApp.app : null);
-  }
-
-  static pushRoute(BuildContext context, String route) {
-    return Navigator.of(context).pushNamed(route);
   }
 }
 
@@ -81,9 +81,14 @@ class _StandardApp extends State<StandardApp> {
         home: (this.widget.splash != null 
           ? this.widget.splash()
           : SplashScreenPage()),
-        onGenerateRoute: _onGenerateRoute
+        onGenerateRoute: _onGenerateRoute,
+        navigatorObservers: [RouterObserver(_onChangeMainRoute)],
       )
     );
+  }
+
+  _onChangeMainRoute(Route route, Route previousRoute) {
+    StandardApp._mainRoute = route;
   }
 
   Route<dynamic> _onGenerateRoute(RouteSettings routeSettings) {
@@ -94,6 +99,6 @@ class _StandardApp extends State<StandardApp> {
     }
 
     //TODO: Implementar o canPush e canPop
-    return MaterialPageRoute(builder: router.builder);
+    return MaterialPageRoute(builder: router.builder, settings: routeSettings);
   }
 }
