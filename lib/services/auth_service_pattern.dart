@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:module_provider/module_provider.dart';
 
 abstract class AuthServicePattern extends Service {
@@ -35,7 +36,8 @@ abstract class AuthServicePattern extends Service {
     return null;
   }
 
-  signOut() async {
+  @mustCallSuper
+  Future signOut() async {
     await auth.signOut();
   }
 
