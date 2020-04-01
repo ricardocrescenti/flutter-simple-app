@@ -28,7 +28,7 @@ class SplashScreenPage extends StatefulWidget {
       padding: EdgeInsets.only(top: (childs.length > 0 ? 10 : 0)),
       child: (this.title != null 
         ? this.title
-        : Text(standardApp.title, style: themeData.textTheme.body1))));
+        : Text(standardApp.title, style: themeData.textTheme.body2.copyWith(color: (Theme.of(context).brightness == Brightness.dark ? null : Theme.of(context).primaryTextTheme.title.color))))));
 
     return Scaffold(
       backgroundColor: themeData.colorScheme.primary,
