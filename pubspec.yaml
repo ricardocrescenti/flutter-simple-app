@@ -5,7 +5,7 @@ author: Ricardo Crescenti <ricardo.crescenti@gmail.com>
 homepage: https://github.com/ricardocrescenti/flutter-simple-app
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -26,14 +26,15 @@ dependencies:
       url: https://github.com/ricardocrescenti/flutter-simple-form.git
       ref: master
   useful_widgets:
-    #path: 'D:\Projetos\CrescentiApps\Flutter-Packages\flutter-useful-widgets'
-    git: 
-      url: https://github.com/ricardocrescenti/flutter-useful-widgets.git
-      ref: master
+    path: 'D:\Projetos\CrescentiApps\Flutter-Packages\flutter-useful-widgets'
+    # git: 
+    #   url: https://github.com/ricardocrescenti/flutter-useful-widgets.git
+    #   ref: master
 
   dio: ^3.0.6
   firebase_auth: ^0.14.0+9
   font_awesome_flutter: ^8.5.0
+  localstorage: ^3.0.1+4
 
 dev_dependencies:
   flutter_test:

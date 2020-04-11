@@ -1,22 +1,22 @@
 import 'dart:convert';
 
 class GraphQLJsonBuilder {
-  final String _type;
-  final String _resolverName;
+  final String type;
+  final String resolverName;
   final Map<String, Object> _args = {};
   final List<dynamic> _fields = [];
 
-  GraphQLJsonBuilder(this._type, this._resolverName);
+  GraphQLJsonBuilder(this.type, this.resolverName);
 
-  GraphQLJsonBuilder arg(String name, dynamic value) {
+  GraphQLJsonBuilder addArg(String name, dynamic value) {
     _args.putIfAbsent(name, () => value);
     return this;
   }
-  GraphQLJsonBuilder args(Map<String, dynamic> args) {
-    args.forEach((key, value) => arg(key, value));
+  GraphQLJsonBuilder addArgs(Map<String, dynamic> args) {
+    args.forEach((key, value) => addArg(key, value));
     return this;
   }
-  GraphQLJsonBuilder fields(List<dynamic> fields) {
+  GraphQLJsonBuilder addFields(List<dynamic> fields) {
     _fields.addAll(fields);
     return this;
   }
@@ -80,7 +80,7 @@ class GraphQLJsonBuilder {
     String args = _argsToString();
     String fields = _fieldsToString();
 
-    return '''$_type {$_resolverName$args {$fields}}''';
+    return '''$type {$resolverName$args {$fields}}''';
   }
 
   static GraphQLJsonBuilder query(String resolverName) {

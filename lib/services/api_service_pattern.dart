@@ -1,9 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:simple_app/simple_app.dart';
 
 abstract class ApiServicePattern extends Service {
   String get baseUrl;
   final Dio dio = Dio();
+
+  LocalStorage _localStorage;
+  LocalStorage get localStorage => _localStorage;
 
   GraphQLClient _graphQL;
   GraphQLClient get graphQL => _graphQL;
@@ -23,14 +28,22 @@ abstract class ApiServicePattern extends Service {
   }
 
   dynamic onRequest(RequestOptions request) async => request;
-  dynamic onResponse(Response<dynamic> response) async => response.data;
+  dynamic onResponse(Response<dynamic> response) async => response;
   dynamic onError(DioError error) async => error;
 
-  initializeGraphQL({String routePath = 'graphql'}) {
+  Future<bool> initializeCache({String fileName}) {
+    _localStorage = new LocalStorage(fileName == null || fileName.isEmpty ? this.toString() : fileName + '.json');
+    return _localStorage.ready;
+  }
+
+  GraphQLClient initializeGraphQL({String routePath = 'graphql'}) {
     _graphQL = GraphQLClient(
       apiService: this,
       routePath: routePath);
+    return graphQL;
   }
+
+  processError(BuildContext context, Object error);
 
   @override
   void dispose() {
