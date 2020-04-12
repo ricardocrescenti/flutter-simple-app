@@ -28,11 +28,22 @@ abstract class ApiServicePattern extends Service {
   }
 
   dynamic onRequest(RequestOptions request) async => request;
-  dynamic onResponse(Response<dynamic> response) async => response;
-  dynamic onError(DioError error) async => error;
+  dynamic onResponse(Response<dynamic> response) async {
+    response.data = DefaultApiResponseModel.fromJson(response.data);
+    if (response.data.errors.isNotEmpty) {
+      throw response.data;
+    }
+    return response;
+  }
+  dynamic onError(DioError error) async {
+    if (error.response != null) {
+      error.response.data = DefaultApiResponseModel.fromError(error);
+    }
+    return error;
+  }
 
   Future<bool> initializeCache({String fileName}) {
-    _localStorage = new LocalStorage(fileName == null || fileName.isEmpty ? this.toString() : fileName + '.json');
+    _localStorage = new LocalStorage('cache_' + (fileName == null || fileName.isEmpty ? this.runtimeType.toString() : fileName) + '.json', null, {});
     return _localStorage.ready;
   }
 

@@ -29,6 +29,15 @@ class DefaultApiResponseModel {
       this.errors = [DefaultErrorModel(message: error.response.data['errors'])];
     }
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'data': data,
+      'errors': errors,
+      'info': info,
+      'status': status,
+    };
+  }
 }
 
 class DefaultErrorModel {
