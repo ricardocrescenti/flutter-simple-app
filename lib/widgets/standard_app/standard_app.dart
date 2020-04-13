@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:simple_app/classes/app_bar_config.dart';
 import 'package:simple_app/classes/inherited_app.dart';
 import 'package:simple_app/classes/router_observer.dart';
 import 'package:simple_app/simple_app.dart';
@@ -13,6 +14,7 @@ class StandardApp extends StatefulWidget {
   final Iterable<Locale> supportedLocales;
   final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
   final ThemeData theme;
+  final AppBarConfig appBarConfig;
   final SplashScreenPage Function() splash;
   final Future<String> Function(BuildContext context) load;
   final String defaultRoute;
@@ -33,6 +35,7 @@ class StandardApp extends StatefulWidget {
       GlobalWidgetsLocalizations.delegate,
     ],
     this.theme,
+    this.appBarConfig,
     this.splash,
     this.load,
     this.defaultRoute,
@@ -45,6 +48,49 @@ class StandardApp extends StatefulWidget {
   static StandardApp of(BuildContext context) {
     InheritedApp inheritedApp = context.dependOnInheritedWidgetOfExactType<InheritedApp>();
     return (inheritedApp != null ? inheritedApp.app : null);
+  }
+
+  static AppBar defaultAppBar(BuildContext context, {
+    Widget leading,
+    bool automaticallyImplyLeading = true,
+    Widget title,
+    List<Widget> actions,
+    Widget flexibleSpace,
+    PreferredSizeWidget bottom,
+    double elevation,
+    ShapeBorder shape,
+    Color backgroundColor,
+    Brightness brightness,
+    IconThemeData iconTheme,
+    IconThemeData actionsIconTheme,
+    TextTheme textTheme,
+    bool primary = true,
+    bool centerTitle,
+    double titleSpacing = NavigationToolbar.kMiddleSpacing,
+    double toolbarOpacity = 1.0,
+    double bottomOpacity = 1.0,
+  }) {
+    AppBarConfig appBarConfig = of(context).appBarConfig;
+    return AppBar(
+      leading: leading,
+      automaticallyImplyLeading: automaticallyImplyLeading ?? appBarConfig?.automaticallyImplyLeading,
+      title: title,
+      actions: actions,
+      flexibleSpace: flexibleSpace,
+      bottom: bottom,
+      elevation: elevation ?? appBarConfig?.elevation,
+      shape: shape ?? appBarConfig?.shape,
+      backgroundColor: backgroundColor ?? appBarConfig?.backgroundColor,
+      brightness: brightness ?? appBarConfig?.brightness,
+      iconTheme: iconTheme ?? appBarConfig?.iconTheme,
+      actionsIconTheme: actionsIconTheme ?? appBarConfig?.actionsIconTheme,
+      textTheme: textTheme ?? appBarConfig?.textTheme,
+      primary: primary,
+      centerTitle: centerTitle ?? appBarConfig?.centerTitle,
+      titleSpacing: titleSpacing ?? appBarConfig?.titleSpacing,
+      toolbarOpacity: toolbarOpacity ?? appBarConfig?.toolbarOpacity,
+      bottomOpacity: bottomOpacity ?? appBarConfig?.bottomOpacity,
+    );
   }
 }
 

@@ -1,6 +1,7 @@
 library simple_app;
 
 export 'classes/api_cache_callback.dart';
+export 'classes/app_bar_config.dart';
 export 'classes/dialogs.dart';
 export 'classes/graphql_client.dart';
 export 'classes/graphql_json_builder.dart';
