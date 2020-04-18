@@ -15,6 +15,7 @@ export 'models/graphql_schema.dart';
 
 export 'services/api_service_pattern.dart';
 export 'services/auth_service_pattern.dart';
+export 'services/storage_service_pattern.dart';
 
 export 'widgets/splash_screen/splash_screen.dart';
 export 'widgets/standard_app/standard_app.dart';
