@@ -14,7 +14,7 @@ class StandardApp extends StatefulWidget {
   final Iterable<Locale> supportedLocales;
   final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
   final ThemeData theme;
-  final AppBarConfig appBarConfig;
+  final AppBarConfig Function(BuildContext context) appBarConfig;
   final SplashScreenPage Function() splash;
   final Future<String> Function(BuildContext context) load;
   final String defaultRoute;
@@ -50,6 +50,14 @@ class StandardApp extends StatefulWidget {
     return (inheritedApp != null ? inheritedApp.app : null);
   }
 
+  static navigateToMainRoute(BuildContext context, String mainRoute) {
+    if (mainRoute == StandardApp.mainRoute.settings.name) {
+      Navigator.popUntil(context, (route) => route.isFirst);
+    } else {
+      Navigator.pushReplacementNamed(context, mainRoute);
+    }
+  }
+
   static AppBar defaultAppBar(BuildContext context, {
     Widget leading,
     bool automaticallyImplyLeading = true,
@@ -70,7 +78,7 @@ class StandardApp extends StatefulWidget {
     double toolbarOpacity = 1.0,
     double bottomOpacity = 1.0,
   }) {
-    AppBarConfig appBarConfig = of(context).appBarConfig;
+    AppBarConfig appBarConfig = of(context).appBarConfig(context);
     return AppBar(
       leading: leading,
       automaticallyImplyLeading: automaticallyImplyLeading ?? appBarConfig?.automaticallyImplyLeading,
