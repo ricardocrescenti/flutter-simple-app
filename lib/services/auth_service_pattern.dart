@@ -9,8 +9,6 @@ abstract class AuthServicePattern extends Service {
   FirebaseUser _firebaseUser;
   FirebaseUser get firebaseUser => _firebaseUser;
 
-  UserInfo get userInfo => _firebaseUser?.providerData[_firebaseUser.providerData.length - 1];
-
   AuthServicePattern(Module module) : super(module);
 
   signInAnonimous() async {
@@ -37,14 +35,11 @@ abstract class AuthServicePattern extends Service {
         idToken: googleAuthentication.idToken,
       );
 
-      AuthResult authResult;
       if (_firebaseUser != null && _firebaseUser.isAnonymous) {
-        authResult = await _firebaseUser.linkWithCredential(authCredential);
-        authResult.user.unlinkFromProvider('firebase');
-      } else {
-        authResult = await auth.signInWithCredential(authCredential);
+        await _firebaseUser.delete();
       }
 
+      await auth.signInWithCredential(authCredential);
       return await getCurrentFirebaseUser();
     }
     
@@ -52,7 +47,7 @@ abstract class AuthServicePattern extends Service {
   }
 
   @mustCallSuper
-  Future signOut() async {
+  Future<void> signOut() async {
     await auth.signOut();
   }
 
