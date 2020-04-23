@@ -44,13 +44,13 @@ class GraphQLClient {
 
       futureResponse.then((response) {
         apiService.localStorage.setItem(cache.name, (response.data is DefaultApiResponseModel ? response.data.toJson() : response.data));
-        if (localCache != null) {
+        if (localCache != null && cache.onGetData != null) {
           cache.onGetData(convertion(response.data));
         }
       });
     }
 
-    if (response == null) {
+    if (response == null || cache?.onGetData == null) {
       response = await futureResponse;
     }
 
