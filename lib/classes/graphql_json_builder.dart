@@ -28,11 +28,11 @@ class GraphQLJsonBuilder {
   }
 
   String _argsToString() {
-    String args = _encodeMap(_args);
+    String args = _encodeMap(_args, '[]{}');
     return (args.length > 0 ? '($args)' : '');
   }
   String _fieldsToString() {
-    String fields = _encodeList(_fields);
+    String fields = _encodeList(_fields, '{}');
     // _fields.forEach((field) {
     //   fields += (fields.length > 0 ? ' ' : '') + '$field';
     // });
@@ -40,16 +40,16 @@ class GraphQLJsonBuilder {
     return fields;
   }
 
-  _encodeMap(Map map, {bool separeKeyValue = true}) {
+  _encodeMap(Map map, String listSyntax, {bool separeKeyValue = true}) {
     String separatorKeyValue = (separeKeyValue ? ':' : '');
     String encodedMap = "";
 
     map.forEach((key, value) {
       dynamic encodedValue;
       if (value is List) {
-        encodedValue = '{' + _encodeList(value) + '}';
+        encodedValue = listSyntax[0] + _encodeList(value, listSyntax) + listSyntax[1];
       } else if (value is Map) {
-        encodedValue = '{' + _encodeMap(value, separeKeyValue: separeKeyValue) + '}';
+        encodedValue = '{' + _encodeMap(value, listSyntax, separeKeyValue: separeKeyValue) + '}';
       } else if (value is DateTime) {
         encodedValue = json.encode(value.toIso8601String());
       } else if (value != null) {
@@ -59,16 +59,20 @@ class GraphQLJsonBuilder {
     });
     return encodedMap;
   }
-  _encodeList(List list) {
+  _encodeList(List list, String listSyntax) {
     String encodedMap = "";
     list.forEach((value) {
       dynamic encodedValue;
       if (value is List) {
-        encodedValue = _encodeList(value);
+        encodedValue = _encodeList(value, listSyntax);
       } else if (value is Map) {
-        encodedValue = _encodeMap(value, separeKeyValue: false);
+        encodedValue = _encodeMap(value, listSyntax, separeKeyValue: (listSyntax.length > 2));
       } else if (value != null) {
         encodedValue = value;
+      }
+
+      if (listSyntax.length > 2) {
+        encodedValue = listSyntax[2] + encodedValue + listSyntax[3];
       }
       encodedMap += (encodedMap.length > 0 ? ', ' : '') + '$encodedValue';
     });
