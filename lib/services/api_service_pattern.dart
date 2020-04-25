@@ -54,7 +54,7 @@ abstract class ApiServicePattern extends Service {
     return graphQL;
   }
 
-  processError(BuildContext context, Object error);
+  Future<void> processError(BuildContext context, Object error);
 
   @override
   void dispose() {
