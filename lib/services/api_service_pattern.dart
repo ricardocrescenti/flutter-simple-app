@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:simple_app/simple_app.dart';
 
@@ -53,8 +52,6 @@ abstract class ApiServicePattern extends Service {
       routePath: routePath);
     return graphQL;
   }
-
-  Future<void> processError(BuildContext context, Object error);
 
   @override
   void dispose() {
