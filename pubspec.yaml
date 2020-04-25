@@ -21,10 +21,10 @@ dependencies:
     #   ref: master
   simple_localization: ^1.0.0
   simple_form:
-    #path: 'D:\Projetos\CrescentiApps\Packages\Flutter\flutter-simple-form'
-    git: 
-      url: https://github.com/ricardocrescenti/flutter-simple-form.git
-      ref: master
+    path: 'D:\Projetos\CrescentiApps\Packages\Flutter\flutter-simple-form'
+    # git: 
+    #   url: https://github.com/ricardocrescenti/flutter-simple-form.git
+    #   ref: master
   useful_widgets:
     path: 'D:\Projetos\CrescentiApps\Packages\Flutter\flutter-useful-widgets'
     # git: 
