@@ -51,9 +51,8 @@ class StandardApp extends StatefulWidget {
   }
 
   static navigateToMainRoute(BuildContext context, String mainRoute) {
-    if (mainRoute == StandardApp.mainRoute.settings.name) {
-      Navigator.popUntil(context, (route) => route.isFirst);
-    } else {
+    Navigator.popUntil(context, (route) => route.isFirst);
+    if (mainRoute != StandardApp.mainRoute.settings.name) {
       Navigator.pushReplacementNamed(context, mainRoute);
     }
   }
