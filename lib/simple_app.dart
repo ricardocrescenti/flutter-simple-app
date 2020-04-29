@@ -20,6 +20,7 @@ export 'services/storage_service_pattern.dart';
 
 export 'widgets/splash_screen/splash_screen.dart';
 export 'widgets/standard_app/standard_app.dart';
+export 'widgets/standard_form/standard_form.dart';
 
 export 'package:module_provider/module_provider.dart';
 export 'package:simple_localization/simple_localization.dart';
