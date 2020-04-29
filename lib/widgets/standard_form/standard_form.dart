@@ -73,7 +73,7 @@ class _StandardFormState extends State<StandardForm> {
       return;
     }
 
-    Dialogs.showAwait(context, 'Salvando Endereço', () async {
+    Dialogs.showAwait(context, SimpleAppLocalization.of(context)[StandardFormMessages.savingText], () async {
       return widget.onSave(context, formValues);
     }).then((savedData) {
       if (widget.popOnSave && savedData != null) {

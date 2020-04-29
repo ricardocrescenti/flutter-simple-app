@@ -10,6 +10,9 @@ export 'classes/router_group.dart';
 export 'classes/router_pattern.dart';
 export 'classes/router.dart';
 
+export 'localizations/localizations_enums.dart';
+export 'localizations/simple_app_localization.dart';
+
 export 'models/default_api_response_model.dart';
 export 'models/graphql_schema.dart';
 
