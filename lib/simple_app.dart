@@ -6,9 +6,6 @@ export 'classes/dialogs.dart';
 export 'classes/graphql_client.dart';
 export 'classes/graphql_json_builder.dart';
 export 'classes/inherited_app.dart';
-export 'classes/router_group.dart';
-export 'classes/router_pattern.dart';
-export 'classes/router.dart';
 
 export 'localizations/localizations_enums.dart';
 export 'localizations/simple_app_localization.dart';

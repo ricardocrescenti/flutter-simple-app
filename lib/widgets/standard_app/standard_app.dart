@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:simple_app/classes/app_bar_config.dart';
 import 'package:simple_app/classes/inherited_app.dart';
-import 'package:simple_app/classes/router_observer.dart';
 import 'package:simple_app/simple_app.dart';
 import 'package:simple_app/widgets/splash_screen/splash_screen.dart';
 
@@ -51,9 +50,11 @@ class StandardApp extends StatefulWidget {
   }
 
   static navigateToMainRoute(BuildContext context, String mainRoute) {
-    Navigator.popUntil(context, (route) => route.isFirst);
+    Navigator.of(context, rootNavigator: true).popUntil((route) {
+      return route.isFirst;
+    });
     if (mainRoute != StandardApp.mainRoute.settings.name) {
-      Navigator.pushReplacementNamed(context, mainRoute);
+      Navigator.of(context, rootNavigator: true).pushReplacementNamed(mainRoute);
     }
   }
 
@@ -101,24 +102,11 @@ class StandardApp extends StatefulWidget {
   }
 }
 
-class _StandardApp extends State<StandardApp> {
-  final Map<String, Router> _routes = {};
-
+class _StandardApp extends State<StandardApp> with RouterOperations {
   @override
   void initState() {
     super.initState();
-
-    _loadRoutes(widget.routes);
-  }
-
-  _loadRoutes(List<RouterPattern> routes, {String parentUrl = ''}) {
-    routes.forEach((route) {
-      if (route is RouterGroup) {
-        _loadRoutes(route.routes, parentUrl: parentUrl + (parentUrl.length > 0 && route.name.length > 0 ? '/' : '') + route.name);
-      } else {
-        _routes[parentUrl + (parentUrl.length > 0 && route.name.length > 0 ? '/' : '') + route.name] = route;
-      }
-    });
+    loadRoutes(widget.routes);
   }
 
   @override
@@ -134,24 +122,16 @@ class _StandardApp extends State<StandardApp> {
         home: (this.widget.splash != null 
           ? this.widget.splash()
           : SplashScreenPage()),
-        onGenerateRoute: _onGenerateRoute,
-        navigatorObservers: [RouterObserver(_onChangeMainRoute)],
+        onGenerateRoute: onGenerateRoute,
+        navigatorObservers: [RouterObserver(
+          onPush: (route, previousRoute) { if (previousRoute == null) _onChangeMainRoute(route); },
+          onReplace: (newRoute, previousRoute) => _onChangeMainRoute(newRoute)
+        )],
       )
     );
   }
 
-  _onChangeMainRoute(Route route, Route previousRoute) {
+  _onChangeMainRoute(Route route) {
     StandardApp._mainRoute = route;
-  }
-
-  Route<dynamic> _onGenerateRoute(RouteSettings routeSettings) {
-    Router router = _routes[routeSettings.name];   
-    if (router == null) {
-      //TODO: Implementar a rota inválida
-      return null;
-    }
-
-    //TODO: Implementar o canPush e canPop
-    return MaterialPageRoute(builder: router.builder, settings: routeSettings);
   }
 }
