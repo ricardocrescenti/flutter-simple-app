@@ -47,7 +47,7 @@ abstract class AuthServicePattern extends Service {
   }
 
   @mustCallSuper
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     await auth.signOut();
   }
 
