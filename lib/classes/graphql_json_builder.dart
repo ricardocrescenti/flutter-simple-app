@@ -13,7 +13,7 @@ class GraphQLJsonBuilder {
     return this;
   }
   GraphQLJsonBuilder addArgs(Map<String, dynamic> args) {
-    args.forEach((key, value) => addArg(key, value));
+    args?.forEach((key, value) => addArg(key, value));
     return this;
   }
   GraphQLJsonBuilder addFields(List<dynamic> fields) {
