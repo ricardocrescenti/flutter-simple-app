@@ -3,19 +3,25 @@ import 'package:simple_app/simple_app.dart';
 
 class StandardForm extends StatefulWidget {
   final Widget title;
+  final EdgeInsets padding;
+  final bool scroll;
   final bool popOnSave;
   final Map<String, dynamic> Function(BuildContext context) initialValues;
   final Widget Function(BuildContext context, ValuesProvider formValues, FormLayout formLayout) buildForm;
   final Future<bool> Function(BuildContext context, ValuesProvider formValues) onValidate;
   final Future<dynamic> Function(BuildContext context, ValuesProvider formValues) onSave;
+  final Future<dynamic> Function(BuildContext context, Object error) processError;
 
   StandardForm({
     @required this.title,
+    this.padding = const EdgeInsets.all(20),
+    this.scroll = true,
     this.popOnSave = true,
     @required this.initialValues,
     @required this.buildForm,
     this.onValidate,
-    @required this.onSave
+    @required this.onSave,
+    this.processError
   });
 
   @override
@@ -27,9 +33,12 @@ class _StandardFormState extends State<StandardForm> {
   GlobalKey<FormState> formState = GlobalKey();
 
   @override
-  void initState() {
-    super.initState();
-    formValues = ValuesProvider(widget.initialValues(context));
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (formValues == null) {
+      formValues = ValuesProvider(widget.initialValues(context));
+    }
   }
 
   @override
@@ -51,7 +60,8 @@ class _StandardFormState extends State<StandardForm> {
       initialValues: formValues.values,
       onChange: formValues.setValue,
       child: FormLayout(
-        scroll: true,
+        padding: widget.padding,
+        scroll: widget.scroll,
         builder: (formLayout) => widget.buildForm(context, formValues, formLayout),
       )
     );
@@ -74,7 +84,12 @@ class _StandardFormState extends State<StandardForm> {
     }
 
     Dialogs.showAwait(context, SimpleAppLocalization.of(context)[StandardFormMessages.savingText], () async {
-      return widget.onSave(context, formValues);
+      return widget.onSave(context, formValues)
+        .catchError((onError) async {
+          if (widget.processError != null) {
+            await widget.processError(context, onError);
+          }
+        });
     }).then((savedData) {
       if (widget.popOnSave && savedData != null) {
         Navigator.pop(context, savedData);
