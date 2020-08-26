@@ -7,9 +7,10 @@ import 'package:simple_app/simple_app.dart';
 import 'package:simple_app/widgets/splash_screen/splash_screen.dart';
 
 class StandardApp extends StatefulWidget {
-  final String title;
+  final String Function(BuildContext context) title;
   final Widget logo;
   final Locale locale;
+  /// [Locale('en', 'US')]
   final Iterable<Locale> supportedLocales;
   final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
   final ThemeData theme;
@@ -17,28 +18,21 @@ class StandardApp extends StatefulWidget {
   final SplashScreenPage Function() splash;
   final Future<String> Function(BuildContext context) load;
   final String defaultRoute;
-  final List<RouterPattern> routes;
 
-  static Route _mainRoute;
-  static Route get mainRoute => _mainRoute;
+  // static Route _mainRoute;
+  // static Route get mainRoute => _mainRoute;
 
   StandardApp({
     @required this.title,
     this.logo,
     this.locale,
-    this.supportedLocales = const [
-      Locale('en', 'US')
-    ],
-    this.localizationsDelegates = const [
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-    ],
+    @required this.supportedLocales,
+    this.localizationsDelegates,
     this.theme,
     this.appBarConfig,
     this.splash,
     this.load,
     this.defaultRoute,
-    @required this.routes
   });
 
   @override
@@ -49,16 +43,16 @@ class StandardApp extends StatefulWidget {
     return (inheritedApp != null ? inheritedApp.app : null);
   }
 
-  static navigateToMainRoute(BuildContext context, String mainRoute) {
-    Navigator.of(context, rootNavigator: true).popUntil((route) {
-      return route.isFirst;
-    });
-    if (mainRoute != StandardApp.mainRoute.settings.name) {
-      Navigator.of(context, rootNavigator: true).pushReplacementNamed(mainRoute);
-    }
-  }
+  // static navigateToMainRoute(BuildContext context, String mainRoute) {
+  //   Navigator.of(context, rootNavigator: true).popUntil((route) {
+  //     return route.isFirst;
+  //   });
+  //   if (mainRoute != StandardApp.mainRoute.settings.name) {
+  //     Navigator.of(context, rootNavigator: true).pushReplacementNamed(mainRoute);
+  //   }
+  // }
 
-  static AppBar defaultAppBar(BuildContext context, {
+  static AppBar appBar(BuildContext context, {
     Widget leading,
     bool automaticallyImplyLeading = true,
     Widget title,
@@ -102,11 +96,10 @@ class StandardApp extends StatefulWidget {
   }
 }
 
-class _StandardApp extends State<StandardApp> with RouterOperations {
+class _StandardApp extends State<StandardApp> {
   @override
   void initState() {
     super.initState();
-    loadRoutes(widget.routes);
   }
 
   @override
@@ -114,24 +107,27 @@ class _StandardApp extends State<StandardApp> with RouterOperations {
     return InheritedApp(
       app: this.widget,
       child: MaterialApp(
-        title: widget.title,
+        onGenerateTitle: widget.title,
         locale: widget.locale,
         supportedLocales: widget.supportedLocales,
-        localizationsDelegates: widget.localizationsDelegates,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ]..addAll(widget.localizationsDelegates ?? []),
         theme: widget.theme,
         home: (this.widget.splash != null 
           ? this.widget.splash()
           : SplashScreenPage()),
-        onGenerateRoute: onGenerateRoute,
-        navigatorObservers: [RouterObserver(
-          onPush: (route, previousRoute) { if (previousRoute == null) _onChangeMainRoute(route); },
-          onReplace: (newRoute, previousRoute) => _onChangeMainRoute(newRoute)
-        )],
+        onGenerateRoute: Module.onGenerateRoute,
+        // navigatorObservers: [RouterObserver(
+        //   onPush: (route, previousRoute) { if (previousRoute == null) _onChangeMainRoute(route); },
+        //   onReplace: (newRoute, previousRoute) => _onChangeMainRoute(newRoute)
+        // )],
       )
     );
   }
 
-  _onChangeMainRoute(Route route) {
-    StandardApp._mainRoute = route;
-  }
+  // _onChangeMainRoute(Route route) {
+  //   StandardApp._mainRoute = route;
+  // }
 }

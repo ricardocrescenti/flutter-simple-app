@@ -51,7 +51,7 @@ class _StandardFormState extends State<StandardForm> {
   }
 
   _buildAppBar(BuildContext context) {
-    return StandardApp.defaultAppBar(context, title: widget.title);
+    return StandardApp.appBar(context, title: widget.title);
   }
 
   _buildBody() {
@@ -83,7 +83,7 @@ class _StandardFormState extends State<StandardForm> {
       return;
     }
 
-    Dialogs.showAwait(context, SimpleAppLocalization.of(context)[StandardFormMessages.savingText], () async {
+    showAwaitDialog(context, message: Text(SimpleAppLocalization.of(context)[StandardFormMessages.savingText]), function: (context, updateMessage) async {
       return widget.onSave(context, formValues)
         .catchError((onError) async {
           if (widget.processError != null) {

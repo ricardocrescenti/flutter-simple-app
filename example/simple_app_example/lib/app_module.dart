@@ -7,27 +7,27 @@ import 'package:simple_app_example/pages/test_page/test_page.dart';
 class AppModule extends Module {
 
   @override
-  List<Inject<Service>> get services => [
+  List<InjectService> get services => [
     /// relação dos serviços
   ];
 
   @override
-  List<Inject<Module>> get modules => [
-    /// relação dos módulos
+  List<RouterPattern> get routes => [
+    Router('home', builder: (context) => UserModule()),
+    Router('one', builder: (context) => TestPage('Page 01')),
+    Router('two', builder: (context) => TestPage('Page 02')),
+    Router('three', builder: (context) => TestPage('Page 03')),
+    Router('four', builder: (context) => TestPage('Page 04')),
   ];
 
   @override
   Widget build(BuildContext context) {
     return StandardApp(
-      title: 'Standard App',
-      logo: FlutterLogo(size: 100,),
-      defaultRoute: 'home', 
-      routes: [
-        Router('home', builder: (context) => UserModule()),
-        Router('one', builder: (context) => TestPage('Page 01')),
-        Router('two', builder: (context) => TestPage('Page 02')),
-        Router('three', builder: (context) => TestPage('Page 03')),
-        Router('four', builder: (context) => TestPage('Page 04')),
-      ]);
+      title: (context) => 'Standard App',
+      supportedLocales: [
+        Locale('en')
+      ],
+      logo: FlutterLogo(size: 100,)
+    );
   }
 }
