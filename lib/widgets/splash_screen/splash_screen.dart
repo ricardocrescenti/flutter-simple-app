@@ -18,17 +18,16 @@ class SplashScreenPage extends StatefulWidget {
     
     List<Widget> childs = [];
 
-    if (this.logo != null) {
-      childs.add(this.logo);
-    } else if (standardApp.logo != null) {
-      childs.add(standardApp.logo);
+    if (this.logo != null || standardApp.logo != null) {
+      childs.add(Expanded(
+        child: this.logo ?? standardApp.logo));
     }
 
     childs.add(Padding(
-      padding: EdgeInsets.only(top: (childs.length > 0 ? 10 : 0)),
+      padding: EdgeInsets.symmetric(vertical: (childs.length > 0 ? 15 : 0)),
       child: (this.title != null 
         ? this.title
-        : Text(standardApp.title(context), style: themeData.textTheme.bodyText1.copyWith(color: (Theme.of(context).brightness == Brightness.dark ? null : Theme.of(context).primaryTextTheme.headline6.color))))));
+        : Text(standardApp.title(context), style: Theme.of(context).primaryTextTheme.subtitle2))));
 
     return Scaffold(
       backgroundColor: themeData.colorScheme.primary,
