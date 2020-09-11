@@ -12,12 +12,12 @@ class AppModule extends Module {
   ];
 
   @override
-  List<RouterPattern> get routes => [
-    Router('home', builder: (context) => UserModule()),
-    Router('one', builder: (context) => TestPage('Page 01')),
-    Router('two', builder: (context) => TestPage('Page 02')),
-    Router('three', builder: (context) => TestPage('Page 03')),
-    Router('four', builder: (context) => TestPage('Page 04')),
+  List<ModuleRoutePattern> get routes => [
+    ModuleRoute('home', builder: (context) => UserModule()),
+    ModuleRoute('one', builder: (context) => TestPage('Page 01')),
+    ModuleRoute('two', builder: (context) => TestPage('Page 02')),
+    ModuleRoute('three', builder: (context) => TestPage('Page 03')),
+    ModuleRoute('four', builder: (context) => TestPage('Page 04')),
   ];
 
   @override
