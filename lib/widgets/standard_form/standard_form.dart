@@ -3,6 +3,7 @@ import 'package:simple_app/simple_app.dart';
 
 class StandardForm extends StatefulWidget {
   final Widget title;
+  final List<Widget> actions;
   final EdgeInsets padding;
   final bool scroll;
   final bool popOnSave;
@@ -14,6 +15,7 @@ class StandardForm extends StatefulWidget {
 
   StandardForm({
     @required this.title,
+    this.actions,
     this.padding = const EdgeInsets.all(20),
     this.scroll = true,
     this.popOnSave = true,
@@ -51,7 +53,9 @@ class _StandardFormState extends State<StandardForm> {
   }
 
   _buildAppBar(BuildContext context) {
-    return StandardApp.appBar(context, title: widget.title);
+    return StandardApp.defaultAppBar(context, 
+      title: widget.title,
+      actions: this.widget.actions);
   }
 
   _buildBody() {

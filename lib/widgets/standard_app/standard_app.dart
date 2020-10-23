@@ -52,7 +52,7 @@ class StandardApp extends StatefulWidget {
   //   }
   // }
 
-  static AppBar appBar(BuildContext context, {
+  static AppBar defaultAppBar(BuildContext context, {
     Widget leading,
     bool automaticallyImplyLeading = true,
     Widget title,

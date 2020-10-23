@@ -43,7 +43,7 @@ class _StandardListState<T> extends State<StandardList<T>> {
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
-			appBar: StandardApp.appBar(context, 
+			appBar: StandardApp.defaultAppBar(context, 
 				title: widget.title, 
 				actions: widget.actions
 			),
