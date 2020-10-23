@@ -14,11 +14,11 @@ dependencies:
     sdk: flutter
   flutter_cupertino_localizations: ^1.0.1
 
-  module_provider: #^2.0.0
+  module_provider: ^2.1.0
     # path: '..\flutter-module-provider'
-    git: 
-      url: https://github.com/ricardocrescenti/flutter-module-provider.git
-      ref: dev
+    # git: 
+    #   url: https://github.com/ricardocrescenti/flutter-module-provider.git
+    #   ref: dev
   simple_localization: ^1.2.1
   simple_form: #^1.0.0
     # path: '..\flutter-simple-form'
