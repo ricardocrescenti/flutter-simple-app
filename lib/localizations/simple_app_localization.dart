@@ -26,15 +26,15 @@ class SimpleAppLocalization extends SimpleLocalizations {
   Map<String, Map<dynamic, String>> get localizedValues => {
     'en': {
       // standard_form
-      StandardFormMessages.savingText: 'Saving'
+      SimpleAppLocalizationEnum.saving: 'Saving'
     },
     'es': {
       // standard_form
-      StandardFormMessages.savingText: 'Guardando'
+      SimpleAppLocalizationEnum.saving: 'Guardando'
     },
     'pt': {
       // standard_form
-      StandardFormMessages.savingText: 'Salvando'
+      SimpleAppLocalizationEnum.saving: 'Salvando'
     }
   };
 }

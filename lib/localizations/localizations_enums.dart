@@ -1,1 +1,1 @@
-enum StandardFormMessages { savingText }
+enum SimpleAppLocalizationEnum { saving }

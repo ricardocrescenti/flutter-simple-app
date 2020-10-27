@@ -6,6 +6,8 @@ export 'classes/inherited_app.dart';
 export 'localizations/localizations_enums.dart';
 export 'localizations/simple_app_localization.dart';
 
+export 'pages/standard_form/standard_form_page.dart';
+
 export 'services/app_service_pattern.dart';
 
 export 'widgets/splash_screen/splash_screen.dart';

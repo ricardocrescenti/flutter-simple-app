@@ -87,7 +87,7 @@ class _StandardFormState extends State<StandardForm> {
       return;
     }
 
-    showAwaitDialog(context, message: Text(SimpleAppLocalization.of(context)[StandardFormMessages.savingText]), function: (context, updateMessage) async {
+    showAwaitDialog(context, message: Text(SimpleAppLocalization.of(context)[SimpleAppLocalizationEnum.saving]), function: (context, updateMessage) async {
       return widget.onSave(context, formValues)
         .catchError((onError) async {
           if (widget.processError != null) {
