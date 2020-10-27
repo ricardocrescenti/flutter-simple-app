@@ -12,7 +12,7 @@ abstract class StandardFormPage<T> extends Component {
 		return StandardForm(
 			title: buildTitle(context, controller),
 			actions: buildActions(context, controller),
-			initialValues: (context) => initialValues(context, controller),
+			initialValues: (context) => processInitialValues(context, controller),
 			buildForm: (context, values, formLayout) => buildForm(context, controller, values, formLayout),
 			onSave: (context, values) => processSave(context, controller, values)
 		);
