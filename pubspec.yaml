@@ -37,6 +37,7 @@ dependencies:
       ref: dev
 
   localstorage: ^3.0.1+4
+  package_info: ^0.4.3
 
 dev_dependencies:
   flutter_test:

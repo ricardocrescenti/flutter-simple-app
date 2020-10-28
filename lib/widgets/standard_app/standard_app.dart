@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:package_info/package_info.dart';
 import 'package:simple_app/classes/app_bar_config.dart';
 import 'package:simple_app/classes/inherited_app.dart';
 import 'package:simple_app/simple_app.dart';
@@ -21,6 +22,8 @@ class StandardApp extends StatefulWidget {
 
   // static Route _mainRoute;
   // static Route get mainRoute => _mainRoute;
+
+  static Future<PackageInfo> packageInfo = PackageInfo.fromPlatform();
 
   StandardApp({
     @required this.title,

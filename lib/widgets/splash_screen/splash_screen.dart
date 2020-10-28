@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:simple_app/simple_app.dart';
 
 class SplashScreenPage extends StatefulWidget {
@@ -28,6 +29,15 @@ class SplashScreenPage extends StatefulWidget {
       child: (this.title != null 
         ? this.title
         : Text(standardApp.title(context), style: Theme.of(context).primaryTextTheme.subtitle2))));
+    
+    childs.add(Padding(
+      padding: EdgeInsets.only(bottom: (childs.length > 0 ? 15 : 0)),
+      child: FutureWidget<PackageInfo>(
+        load: (context) => StandardApp.packageInfo, 
+        awaitWidget: (context) => Container(),
+        builder: (context, packageInfo) => Text(packageInfo.version))
+      )
+    );
 
     return Scaffold(
       backgroundColor: themeData.colorScheme.primary,
