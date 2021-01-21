@@ -53,6 +53,10 @@ class _StandardFormState extends State<StandardForm> {
   }
 
   _buildAppBar(BuildContext context) {
+    if (widget.title == null) {
+      return null;
+    }
+
     return StandardApp.defaultAppBar(context, 
       title: widget.title,
       actions: this.widget.actions);
@@ -72,6 +76,10 @@ class _StandardFormState extends State<StandardForm> {
   }
 
   _buildBottomButton(BuildContext context) {
+    if (widget.onSave == null) {
+      return null;
+    }
+    
     return BottomButton(
       child: Text('SALVAR'),
       onPressed: () => _save(context),

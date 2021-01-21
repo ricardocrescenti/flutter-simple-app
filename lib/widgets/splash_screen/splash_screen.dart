@@ -25,17 +25,17 @@ class SplashScreenPage extends StatefulWidget {
     }
 
     childs.add(Padding(
-      padding: EdgeInsets.symmetric(vertical: (childs.length > 0 ? 15 : 0)),
+      padding: EdgeInsets.only(top: (childs.length > 0 ? 15 : 0)),
       child: (this.title != null 
         ? this.title
         : Text(standardApp.title(context), style: Theme.of(context).primaryTextTheme.subtitle2))));
     
     childs.add(Padding(
-      padding: EdgeInsets.only(bottom: (childs.length > 0 ? 15 : 0)),
+      padding: EdgeInsets.only(top: 5, bottom: (childs.length > 0 ? 15 : 0)),
       child: FutureWidget<PackageInfo>(
         load: (context) => StandardApp.packageInfo, 
         awaitWidget: (context) => Container(),
-        builder: (context, packageInfo) => Text(packageInfo.version))
+        builder: (context, packageInfo) => Text(packageInfo.version, style: Theme.of(context).primaryTextTheme.caption.copyWith(color: Theme.of(context).primaryTextTheme.subtitle2.color), textScaleFactor: 0.7))
       )
     );
 
