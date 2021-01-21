@@ -127,7 +127,7 @@ packages:
       name: module_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.2.1+1"
   package_info:
     dependency: "direct main"
     description:
@@ -239,7 +239,7 @@ packages:
       name: standard_dialogs
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0+1"
+    version: "1.1.2"
   stream_channel:
     dependency: transitive
     description:
