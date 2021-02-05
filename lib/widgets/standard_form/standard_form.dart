@@ -7,7 +7,7 @@ class StandardForm extends StatefulWidget {
   final EdgeInsets padding;
   final bool scroll;
   final bool popOnSave;
-  final Map<String, dynamic> Function(BuildContext context) initialValues;
+  final ValuesProvider Function(BuildContext context) initialValues;
   final Widget Function(BuildContext context, ValuesProvider formValues, FormLayout formLayout) buildForm;
   final Future<bool> Function(BuildContext context, ValuesProvider formValues) onValidate;
   final Future<dynamic> Function(BuildContext context, ValuesProvider formValues) onSave;
@@ -39,7 +39,7 @@ class _StandardFormState extends State<StandardForm> {
     super.didChangeDependencies();
 
     if (formValues == null) {
-      formValues = ValuesProvider(widget.initialValues(context));
+      formValues = widget.initialValues(context);
     }
   }
 

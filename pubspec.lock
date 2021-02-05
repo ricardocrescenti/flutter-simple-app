@@ -197,7 +197,7 @@ packages:
       name: module_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1+1"
+    version: "2.3.0"
   octo_image:
     dependency: transitive
     description:
