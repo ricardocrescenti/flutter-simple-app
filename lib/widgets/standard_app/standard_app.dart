@@ -14,7 +14,9 @@ class StandardApp extends StatefulWidget {
   /// [Locale('en', 'US')]
   final Iterable<Locale> supportedLocales;
   final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
+  final ThemeMode themeMode;
   final ThemeData theme;
+  final ThemeData darkTheme;
   final AppBarConfig Function(BuildContext context) appBarConfig;
   final SplashScreenPage Function() splash;
   final Future<String> Function(BuildContext context) load;
@@ -31,7 +33,9 @@ class StandardApp extends StatefulWidget {
     this.locale,
     @required this.supportedLocales,
     this.localizationsDelegates,
+    this.themeMode = ThemeMode.system,
     this.theme,
+    this.darkTheme,
     this.appBarConfig,
     this.splash,
     this.load,
@@ -117,7 +121,9 @@ class _StandardApp extends State<StandardApp> {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ]..addAll(widget.localizationsDelegates ?? []),
+        themeMode: widget.themeMode,
         theme: widget.theme,
+        darkTheme: widget.darkTheme,
         home: (this.widget.splash != null 
           ? this.widget.splash()
           : SplashScreenPage()),
