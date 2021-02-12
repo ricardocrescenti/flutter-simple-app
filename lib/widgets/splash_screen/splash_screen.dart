@@ -13,27 +13,51 @@ class SplashScreenPage extends StatefulWidget {
     this.title
   });
 
+  @override
+  State<StatefulWidget> createState() => _SplashScreenPageState();
+}
+
+class _SplashScreenPageState extends State<SplashScreenPage> {
+  Future _futureLoad;
+  Future<PackageInfo> packageInfo;
+  
+  @override
+  void initState() {
+    super.initState();
+    packageInfo = StandardApp.packageInfo;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_futureLoad == null) {
+      _futureLoad = _startLoad(context);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     StandardApp standardApp = StandardApp.of(context);
     ThemeData themeData = Theme.of(context);
     
     List<Widget> childs = [];
 
-    if (this.logo != null || standardApp.logo != null) {
+    if (widget.logo != null || standardApp.logo != null) {
       childs.add(Expanded(
-        child: this.logo ?? standardApp.logo));
+        child: widget.logo ?? standardApp.logo));
     }
 
     childs.add(Padding(
       padding: EdgeInsets.only(top: (childs.length > 0 ? 15 : 0)),
-      child: (this.title != null 
-        ? this.title
+      child: (widget.title != null 
+        ? widget.title
         : Text(standardApp.title(context), style: Theme.of(context).primaryTextTheme.subtitle2))));
     
     childs.add(Padding(
       padding: EdgeInsets.only(top: 5, bottom: (childs.length > 0 ? 15 : 0)),
       child: FutureWidget<PackageInfo>(
-        load: (context) => StandardApp.packageInfo, 
+        future: packageInfo, 
         awaitWidget: (context) => Container(),
         builder: (context, packageInfo) => Text(packageInfo.version, style: Theme.of(context).primaryTextTheme.caption.copyWith(color: Theme.of(context).primaryTextTheme.subtitle2.color), textScaleFactor: 0.7))
       )
@@ -52,22 +76,6 @@ class SplashScreenPage extends StatefulWidget {
     );
   }
 
-  @override
-  State<StatefulWidget> createState() => _SplashScreenPageState();
-}
-
-class _SplashScreenPageState extends State<SplashScreenPage> {
-  Future _futureLoad;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    if (_futureLoad == null) {
-      _futureLoad = _startLoad(context);
-    }
-  }
-
   _startLoad(BuildContext context) async {
     StandardApp standardApp = StandardApp.of(context);
 
@@ -77,10 +85,5 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     Future<String> futureSeconds = Future.delayed(Duration(seconds: widget.secondsAwait), () => null);
 
     Future.wait<String>([futureLoad, futureSeconds]).then((routeName) => Navigator.pushReplacementNamed(context, routeName[0]));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.build(context);
   }
 }

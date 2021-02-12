@@ -34,10 +34,12 @@ class StandardList<T> extends StatefulWidget {
 
 class _StandardListState<T> extends State<StandardList<T>> {
 	ListProvider<T> _items = ListProvider();
+	Future<T> futureLoad;
 
 	@override
 	void initState() {
 		super.initState();
+		futureLoad = _loadItems(context);
 	}
 
 	@override
@@ -49,8 +51,8 @@ class _StandardListState<T> extends State<StandardList<T>> {
 			),
 			drawer: widget.drawer,
 			body: FutureWidget<void>(
-				load: (context) => _loadItems(context),
-				allowRetry: true,
+				future: futureLoad,
+				retry: _retry(context),
 				builder: (context, items) => _buildBody()
 			),
 		);
@@ -83,5 +85,11 @@ class _StandardListState<T> extends State<StandardList<T>> {
 	_loadItems(BuildContext context) async {
 		List<T> items = await widget.loadItems(context);
 		_items.clearAddAll(items);
+	}
+
+	_retry(BuildContext context) {
+		setState(() {
+			futureLoad = _loadItems(context);
+		});
 	}
 }
