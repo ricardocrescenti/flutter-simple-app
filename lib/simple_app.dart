@@ -10,6 +10,7 @@ export 'services/app_service_pattern.dart';
 
 export 'widgets/splash_screen/splash_screen.dart';
 export 'widgets/standard_app/standard_app.dart';
+export 'widgets/standard_body/standard_body.dart';
 export 'widgets/standard_form/standard_form.dart';
 export 'widgets/standard_list/standard_list.dart';
 
