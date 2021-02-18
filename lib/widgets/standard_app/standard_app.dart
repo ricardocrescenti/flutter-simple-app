@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info/package_info.dart';
@@ -99,6 +100,71 @@ class StandardApp extends StatefulWidget {
       titleSpacing: titleSpacing ?? appBarConfig?.titleSpacing,
       toolbarOpacity: toolbarOpacity ?? appBarConfig?.toolbarOpacity,
       bottomOpacity: bottomOpacity ?? appBarConfig?.bottomOpacity,
+    );
+  }
+
+  static SliverAppBar defaultSliverAppBar(BuildContext context, {
+    Widget leading,
+    bool automaticallyImplyLeading = true,
+    Widget title,
+    List<Widget> actions,
+    Widget flexibleSpace,
+    PreferredSizeWidget bottom,
+    double elevation,
+    ShapeBorder shape,
+    Color shadowColor,
+    bool forceElevated = false,
+    Color backgroundColor,
+    Brightness brightness,
+    IconThemeData iconTheme,
+    IconThemeData actionsIconTheme,
+    TextTheme textTheme,
+    bool primary = true,
+    bool centerTitle,
+    bool excludeHeaderSemantics = false,
+    double titleSpacing = NavigationToolbar.kMiddleSpacing,
+    double collapsedHeight,
+    double expandedHeight,
+    bool floating = false,
+    bool pinned = false,
+    bool snap = false,
+    bool stretch = false,
+    double stretchTriggerOffset = 100.0,
+    AsyncCallback onStretchTrigger,
+    double toolbarHeight = kToolbarHeight,
+    double leadingWidth,
+  }) {
+    AppBarConfig appBarConfig = of(context).appBarConfig(context);
+    return SliverAppBar(
+      leading: leading,
+      automaticallyImplyLeading: automaticallyImplyLeading ?? appBarConfig?.automaticallyImplyLeading,
+      title: title,
+      actions: actions,
+      flexibleSpace: flexibleSpace,
+      bottom: bottom,
+      elevation: elevation ?? appBarConfig?.elevation,
+      shape: shape ?? appBarConfig?.shape,
+      shadowColor: shadowColor,
+      forceElevated: forceElevated,
+      backgroundColor: backgroundColor ?? appBarConfig?.backgroundColor,
+      brightness: brightness ?? appBarConfig?.brightness,
+      iconTheme: iconTheme ?? appBarConfig?.iconTheme,
+      actionsIconTheme: actionsIconTheme ?? appBarConfig?.actionsIconTheme,
+      textTheme: textTheme ?? appBarConfig?.textTheme,
+      primary: primary,
+      centerTitle: centerTitle ?? appBarConfig?.centerTitle,
+      excludeHeaderSemantics: excludeHeaderSemantics,
+      titleSpacing: titleSpacing ?? appBarConfig?.titleSpacing,
+      collapsedHeight: collapsedHeight,
+      expandedHeight: expandedHeight,
+      floating: floating,
+      pinned: pinned,
+      snap: snap,
+      stretch: stretch,
+      stretchTriggerOffset: stretchTriggerOffset,
+      onStretchTrigger: onStretchTrigger,
+      toolbarHeight: toolbarHeight,
+      leadingWidth: leadingWidth
     );
   }
 }
