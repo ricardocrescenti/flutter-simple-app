@@ -17,10 +17,10 @@ class TestPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(text),
-              RaisedButton(onPressed: () => Navigator.of(context).pushNamed('one'), child: Text('01'),),
-              RaisedButton(onPressed: () => Navigator.of(context).pushNamed('two'), child: Text('02'),),
-              RaisedButton(onPressed: () => Navigator.of(context).pushNamed('three'), child: Text('03'),),
-              RaisedButton(onPressed: () => Navigator.of(context).pushNamed('four'), child: Text('04'),),
+              ElevatedButton(onPressed: () => Navigator.of(context).pushNamed('one'), child: Text('01'),),
+              ElevatedButton(onPressed: () => Navigator.of(context).pushNamed('two'), child: Text('02'),),
+              ElevatedButton(onPressed: () => Navigator.of(context).pushNamed('three'), child: Text('03'),),
+              ElevatedButton(onPressed: () => Navigator.of(context).pushNamed('four'), child: Text('04'),),
             ],
           ),
         )
