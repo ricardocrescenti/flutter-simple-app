@@ -72,12 +72,14 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: childs,
         )
-      ],),
+      ]),
     );
   }
 
-  _startLoad(BuildContext context) async {
+  Future<void> _startLoad(BuildContext context) async {
     StandardApp standardApp = StandardApp.of(context);
+
+    await standardApp.configFilesLoaded;
 
     Future<String> futureLoad = (standardApp.load != null
       ? standardApp.load(context)

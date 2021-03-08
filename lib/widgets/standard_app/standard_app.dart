@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,10 @@ import 'package:simple_app/classes/app_bar_config.dart';
 import 'package:simple_app/classes/inherited_app.dart';
 import 'package:simple_app/simple_app.dart';
 import 'package:simple_app/widgets/splash_screen/splash_screen.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
+Map<String, Map> _configs = {};
+Future<Map<String, Map>> _futureLoadConfig;
 
 class StandardApp extends StatefulWidget {
   final String Function(BuildContext context) title;
@@ -22,11 +28,17 @@ class StandardApp extends StatefulWidget {
   final SplashScreenPage Function() splash;
   final Future<String> Function(BuildContext context) load;
   final String defaultRoute;
+  /// lista os json files with configurations
+  final List<String> configFiles;
 
   // static Route _mainRoute;
   // static Route get mainRoute => _mainRoute;
 
   static Future<PackageInfo> packageInfo = PackageInfo.fromPlatform();
+
+  Future<Map<String, Map>> get configFilesLoaded {
+    return _futureLoadConfig;
+  }
 
   StandardApp({
     @required this.title,
@@ -41,6 +53,7 @@ class StandardApp extends StatefulWidget {
     this.splash,
     this.load,
     this.defaultRoute,
+    this.configFiles
   });
 
   @override
@@ -59,6 +72,10 @@ class StandardApp extends StatefulWidget {
   //     Navigator.of(context, rootNavigator: true).pushReplacementNamed(mainRoute);
   //   }
   // }
+
+  static Map config(String configName) {
+    return _configs[configName];
+  }
 
   static AppBar defaultAppBar(BuildContext context, {
     Widget leading,
@@ -173,6 +190,7 @@ class _StandardApp extends State<StandardApp> {
   @override
   void initState() {
     super.initState();
+    _futureLoadConfig = _loadConfigFiles(widget.configFiles);
   }
 
   @override
@@ -205,4 +223,15 @@ class _StandardApp extends State<StandardApp> {
   // _onChangeMainRoute(Route route) {
   //   StandardApp._mainRoute = route;
   // }
+
+  Future<Map<String, Map>> _loadConfigFiles(List<String> configFiles) async {
+    for (String configFile in widget.configFiles ?? []) {
+      
+      String fileName = configFile.substring(0, configFile.lastIndexOf('.')).split('/').last;
+      String fileText = await rootBundle.loadString(configFile);
+      _configs[fileName] = jsonDecode(fileText);
+      
+    }
+    return _configs;
+  }
 }
