@@ -3,6 +3,7 @@ description: Package to simplify application creation with a standard structure
 version: 1.0.0+1
 author: Ricardo Crescenti <ricardo.crescenti@gmail.com>
 homepage: https://github.com/ricardocrescenti/flutter-simple-app
+publish_to: none
 
 environment:
   sdk: ">=2.2.0 <3.0.0"
@@ -15,19 +16,19 @@ dependencies:
   flutter_cupertino_localizations: ^1.0.1
 
   module_provider: ^2.3.0
-  simple_localization: ^1.2.1
+  simple_localization: ^1.2.2
   simple_form: #^1.0.0
     git: 
       url: https://github.com/ricardocrescenti/flutter-simple-form.git
       ref: master
-  standard_dialogs: ^1.2.0
+  standard_dialogs: ^1.2.2
   useful_widgets: #^1.0.0
     git: 
       url: https://github.com/ricardocrescenti/flutter-useful-widgets.git
       ref: dev
 
-  localstorage: ^3.0.1+4
-  package_info: ^0.4.3
+  localstorage: ^3.0.2+5
+  package_info: ^2.0.0
 
 dev_dependencies:
   flutter_test:
