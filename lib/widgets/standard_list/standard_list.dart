@@ -2,71 +2,80 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/simple_app.dart';
 
 class StandardList<T> extends StatefulWidget {
-  final Widget title;
-  final List<Widget> actions;
+  final AppBar appBar;
   final Widget drawer;
-  final EdgeInsets padding;
+  //final EdgeInsets padding;
+  final ListProvider<T> items;
   final Future<List<T>> Function(BuildContext context) loadItems;
   final bool canRetryLoadOnError;
+  final Widget Function(BuildContext context) buildEmptyPage;
   final Widget Function(BuildContext context, T item) buildItem;
-  final T Function(BuildContext context, ListProvider<T> items) onInsert;
-  final T Function(BuildContext context, ListProvider<T> items, T item) onTap;
-  final T Function(BuildContext context, ListProvider<T> items, T item) onLongPress;
-  final Future<dynamic> Function(BuildContext context, Object error) processError;
+  final Widget Function(BuildContext context) buildSeparator;
+  //final T Function(BuildContext context, ListProvider<T> items) onInsert;
+  //final T Function(BuildContext context, ListProvider<T> items, T item) onTap;
+  //final T Function(BuildContext context, ListProvider<T> items, T item) onLongPress;
+  //final Future<dynamic> Function(BuildContext context, Object error) processError;
 
   StandardList({
-	@required this.title,
-	this.actions,
+	this.appBar,
 	this.drawer,
-	this.padding = const EdgeInsets.symmetric(vertical: 10),
-	@required this.loadItems,
+	//this.padding = const EdgeInsets.symmetric(vertical: 10),
+	this.items,
+	this.loadItems,
 	this.canRetryLoadOnError = true,
+	this.buildEmptyPage,
 	@required this.buildItem,
-	this.onInsert,
-	this.onTap,
-	this.onLongPress,
-	this.processError
-  });
+	this.buildSeparator,
+	//this.onInsert,
+	//this.onTap,
+	//this.onLongPress,
+	//this.processError
+  }) {
+	  assert(items != null || loadItems != null);
+  }
 
   @override
   State<StatefulWidget> createState() => _StandardListState<T>();
 }
 
 class _StandardListState<T> extends State<StandardList<T>> {
-	ListProvider<T> _items = ListProvider();
-	Future<T> futureLoad;
+	ListProvider<T> items;
+	Future<void> futureLoad;
 
 	@override
 	void initState() {
 		super.initState();
-		futureLoad = _loadItems(context);
+		items = widget.items ?? ListProvider<T>();
+ 		futureLoad = _loadItems(context);
 	}
 
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
-			appBar: StandardApp.defaultAppBar(context, 
-				title: widget.title, 
-				actions: widget.actions
-			),
+			appBar: widget.appBar,
 			drawer: widget.drawer,
 			body: FutureWidget<void>(
 				future: futureLoad,
-				retry: _retry(context),
-				builder: (context, items) => _buildBody()
+				retry: (context) => _retry(context),
+				builder: (context, items) => _buildBody(context)
 			),
 		);
 	}
 
-	_buildBody() {
+	Widget _buildBody(BuildContext context) {
 		return ListConsumer(
-			list: _items, 
+			list: items, 
 			builder: (context, items) {
 
+				if (items.length == 0) {
+					return widget.buildEmptyPage != null
+						? widget.buildEmptyPage(context)
+						: Container();
+				}
+
 				return ListView.separated(
-					padding: EdgeInsets.symmetric(vertical: 10),
-					itemBuilder: (context, index) => _buildItem(context, items[index]), 
-					separatorBuilder: (context, index) => Divider(), 
+					itemBuilder: (context, index) => widget.buildItem(context, items[index]), 
+					separatorBuilder: (context, index) => (widget.buildSeparator != null ? widget.buildSeparator(context) : Container()),
 					itemCount: items.length
 				);
 
@@ -74,22 +83,24 @@ class _StandardListState<T> extends State<StandardList<T>> {
 		);
 	}
 
-	_buildItem(BuildContext context, T item) {
-		return GestureDetector(
-			onLongPress: (widget.onLongPress != null ? () => widget.onLongPress(context, _items, item) : null),
-			onTap: (widget.onTap != null ? () => widget.onTap(context, _items, item) : null),
-			child: widget.buildItem(context, item),
-		);
+	// Widget _buildItem(BuildContext context, T item) {
+	// 	return GestureDetector(
+	// 		onLongPress: (widget.onLongPress != null ? () => widget.onLongPress(context, _items, item) : null),
+	// 		onTap: (widget.onTap != null ? () => widget.onTap(context, _items, item) : null),
+	// 		child: widget.buildItem(context, item),
+	// 	);
+	// }
+
+	Future<void> _loadItems(BuildContext context) async {
+		if (widget.loadItems == null) {
+			return Future.value();
+		}
+		items.clearAddAll(await widget.loadItems(context));
 	}
 
-	_loadItems(BuildContext context) async {
-		List<T> items = await widget.loadItems(context);
-		_items.clearAddAll(items);
-	}
-
-	_retry(BuildContext context) {
-		setState(() {
-			futureLoad = _loadItems(context);
-		});
+	Future<void> _retry(BuildContext context) {
+		futureLoad = _loadItems(context);
+		setState(() {});
+		return futureLoad;
 	}
 }
