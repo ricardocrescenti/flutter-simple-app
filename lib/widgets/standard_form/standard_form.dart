@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/simple_app.dart';
 
 class StandardForm extends StatefulWidget {
+	static EdgeInsets defaultPadding = const EdgeInsets.all(10);
+
   final Widget title;
   final List<Widget> actions;
   final EdgeInsets padding;
@@ -16,7 +18,7 @@ class StandardForm extends StatefulWidget {
   StandardForm({
     @required this.title,
     this.actions,
-    this.padding = const EdgeInsets.all(20),
+    this.padding,
     this.scroll = true,
     this.popOnSave = true,
     @required this.initialValues,
@@ -68,7 +70,7 @@ class _StandardFormState extends State<StandardForm> {
       initialValues: formValues.values,
       onChange: formValues.setValue,
       child: FormLayout(
-        padding: widget.padding,
+        padding: widget.padding ?? StandardForm.defaultPadding,
         scroll: widget.scroll,
         builder: (formLayout) => widget.buildForm(context, formValues, formLayout),
       )
