@@ -11,6 +11,7 @@ class StandardForm extends StatefulWidget {
   final bool popOnSave;
   final ValuesProvider Function(BuildContext context) initialValues;
   final Widget Function(BuildContext context, ValuesProvider formValues, FormLayout formLayout) buildForm;
+  final Widget bottomButtonChild;
   final Future<bool> Function(BuildContext context, ValuesProvider formValues) onValidate;
   final Future<dynamic> Function(BuildContext context, ValuesProvider formValues) onSave;
   final Future<dynamic> Function(BuildContext context, Object error) processError;
@@ -23,6 +24,7 @@ class StandardForm extends StatefulWidget {
     this.popOnSave = true,
     @required this.initialValues,
     @required this.buildForm,
+    this.bottomButtonChild,
     this.onValidate,
     @required this.onSave,
     this.processError
@@ -83,7 +85,7 @@ class _StandardFormState extends State<StandardForm> {
     }
     
     return BottomButton(
-      child: Text('SALVAR'),
+      child: widget.bottomButtonChild ?? Text('SALVAR'),
       onPressed: () => _save(context),
     );
   }
