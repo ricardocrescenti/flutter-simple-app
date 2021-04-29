@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/simple_app.dart';
 
 class StandardList<T> extends StatefulWidget {
-  static EdgeInsets defaultPadding = const EdgeInsets.all(10);
+  static EdgeInsets defaultPadding = const EdgeInsets.all(0);
+  static EdgeInsets defaultItemPadding = const EdgeInsets.symmetric(horizontal: 15);
 
   final AppBar appBar;
   final Widget drawer;
@@ -11,9 +12,10 @@ class StandardList<T> extends StatefulWidget {
   final Future<List<T>> Function(BuildContext context) loadItems;
   final bool canRetryLoadOnError;
   final EdgeInsets padding;
+  final EdgeInsets itemPadding;
   final Widget Function(BuildContext context) buildEmptyPage;
-  final Widget Function(BuildContext context, T item) buildItem;
-  final Widget Function(BuildContext context) buildSeparator;
+  final Widget Function(BuildContext context, int index, T item) buildItem;
+  final Widget Function(BuildContext context, int index, T item) buildSeparator;
   //final T Function(BuildContext context, ListProvider<T> items) onInsert;
   //final T Function(BuildContext context, ListProvider<T> items, T item) onTap;
   //final T Function(BuildContext context, ListProvider<T> items, T item) onLongPress;
@@ -22,18 +24,14 @@ class StandardList<T> extends StatefulWidget {
   StandardList({
 	this.appBar,
 	this.drawer,
-	//this.padding = const EdgeInsets.symmetric(vertical: 10),
 	this.items,
 	this.loadItems,
 	this.canRetryLoadOnError = true,
   	this.padding,
+	this.itemPadding,
 	this.buildEmptyPage,
 	@required this.buildItem,
 	this.buildSeparator,
-	//this.onInsert,
-	//this.onTap,
-	//this.onLongPress,
-	//this.processError
   }) {
 	  assert(items != null || loadItems != null);
   }
@@ -79,8 +77,8 @@ class _StandardListState<T> extends State<StandardList<T>> {
 
 				return ListView.separated(
 					padding: widget.padding ?? StandardList.defaultPadding,
-					itemBuilder: (context, index) => widget.buildItem(context, items[index]), 
-					separatorBuilder: (context, index) => (widget.buildSeparator != null ? widget.buildSeparator(context) : Container()),
+					itemBuilder: (context, index) => _buildItem(context, index, items[index]), 
+					separatorBuilder: (context, index) => _buildSeparator(context, index, items[index]),
 					itemCount: items.length
 				);
 
@@ -88,13 +86,20 @@ class _StandardListState<T> extends State<StandardList<T>> {
 		);
 	}
 
-	// Widget _buildItem(BuildContext context, T item) {
-	// 	return GestureDetector(
-	// 		onLongPress: (widget.onLongPress != null ? () => widget.onLongPress(context, _items, item) : null),
-	// 		onTap: (widget.onTap != null ? () => widget.onTap(context, _items, item) : null),
-	// 		child: widget.buildItem(context, item),
-	// 	);
-	// }
+	Widget _buildItem(BuildContext context, int index, T item) {
+		return Padding(
+			padding: widget.itemPadding ?? StandardList.defaultItemPadding,
+			child: widget.buildItem(context, index, item)
+		);
+	}
+
+	Widget _buildSeparator(BuildContext context, int index, T item) {
+		if (widget.buildSeparator == null) {
+			return Container();
+		}
+
+		return widget.buildSeparator(context, index, item);
+	}
 
 	Future<void> _loadItems(BuildContext context) async {
 		if (widget.loadItems == null) {

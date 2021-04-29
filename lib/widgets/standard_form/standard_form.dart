@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/simple_app.dart';
 
 class StandardForm extends StatefulWidget {
-	static EdgeInsets defaultPadding = const EdgeInsets.all(10);
+	static EdgeInsets defaultPadding = const EdgeInsets.all(15);
 
   final Widget title;
   final List<Widget> actions;
