@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:module_provider/module_provider.dart';
 import 'package:simple_app/simple_app.dart';
 import 'package:simple_app_example/modules/user/user_module.dart';
 import 'package:simple_app_example/pages/test_page/test_page.dart';
@@ -24,10 +23,10 @@ class AppModule extends Module {
   Widget build(BuildContext context) {
     return StandardApp(
       title: (context) => 'Standard App',
+      logo: (context) => FlutterLogo(size: 100),
       supportedLocales: [
         Locale('en')
       ],
-      logo: FlutterLogo(size: 100,)
     );
   }
 }

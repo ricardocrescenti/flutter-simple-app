@@ -1,0 +1,15 @@
+include: package:flutter_lints/flutter.yaml
+analyzer:
+  errors:
+    todo: ignore
+    unawaited_futures: ignore
+linter:
+  rules:
+    - cancel_subscriptions
+    - close_sinks
+    - comment_references
+    - constant_identifier_names
+    - empty_statements
+    - prefer_generic_function_type_aliases
+    - prefer_typing_uninitialized_variables
+    - avoid_renaming_method_parameters: false

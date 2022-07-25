@@ -1,1 +1,3 @@
-enum SimpleAppLocalizationEnum { saving }
+enum SimpleAppLocalizationEnum { 
+	saving 
+}

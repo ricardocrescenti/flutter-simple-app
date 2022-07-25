@@ -1,38 +1,47 @@
 name: simple_app
-description: Package to simplify application creation with a standard structure
 version: 1.0.0+1
-author: Ricardo Crescenti <ricardo.crescenti@gmail.com>
+description: Package to simplify application creation with a standard structure
 homepage: https://github.com/ricardocrescenti/flutter-simple-app
+repository: https://github.com/ricardocrescenti/flutter-module-provider
+issue_tracker: https://github.com/ricardocrescenti/flutter-module-provider/issues
 publish_to: none
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_cupertino_localizations: ^1.0.1
+  # flutter_cupertino_localizations: ^1.0.1
 
-  module_provider: ^2.3.0
-  simple_localization: ^1.2.2
+  module_provider: #^3.0.0
+    path: '../flutter-module-provider'
+    # git: 
+    #   url: https://github.com/ricardocrescenti/flutter-module-provider.git
+    #   ref: dev
+  simple_localization: ^2.0.0
   simple_form: #^1.0.0
-    git: 
-      url: https://github.com/ricardocrescenti/flutter-simple-form.git
-      ref: master
-  standard_dialogs: ^1.2.2
+    path: '../flutter-simple-form'
+    # git: 
+    #   url: https://github.com/ricardocrescenti/flutter-simple-form.git
+    #   ref: master
+  standard_dialogs: ^2.0.0
+  useful_classes: ^3.0.0+1
   useful_widgets: #^1.0.0
-    git: 
-      url: https://github.com/ricardocrescenti/flutter-useful-widgets.git
-      ref: dev
+    path: '../flutter-useful-widgets'
+    # git: 
+    #   url: https://github.com/ricardocrescenti/flutter-useful-widgets.git
+    #   ref: dev
 
-  localstorage: ^3.0.2+5
-  package_info: ^2.0.0
+  localstorage: ^4.0.0+1
+  package_info_plus: ^1.4.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
