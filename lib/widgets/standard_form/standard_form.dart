@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_app/simple_app.dart';
 
@@ -15,7 +16,7 @@ class StandardForm extends StatefulWidget {
 	final Widget? bottomButtonChild;
 	final Future<bool> Function(BuildContext context, MapProvider formValues)? onValidate;
 	final Future<dynamic> Function(BuildContext context, MapProvider formValues)? onSave;
-	final Future<dynamic> Function(BuildContext context, Object error)? processError;
+	final Future<void> Function(BuildContext context, Object error)? processError;
 
 	const StandardForm({
 		Key? key,
@@ -60,12 +61,12 @@ class _StandardFormState extends State<StandardForm> {
 		return Scaffold(
 			appBar: _buildAppBar(context),
 			body: _buildBody(),
-			bottomNavigationBar: _buildBottomButton(context),
+			bottomNavigationBar: _buildBottomButtons(context),
 		);
 
 	}
 
-	_buildAppBar(BuildContext context) {
+	AppBar? _buildAppBar(BuildContext context) {
 
 		if (widget.title == null) {
 			return null;
@@ -73,11 +74,12 @@ class _StandardFormState extends State<StandardForm> {
 
 		return StandardApp.defaultAppBar(context, 
 			title: widget.title,
-			actions: widget.actions);
+			actions: widget.actions,
+			automaticallyImplyLeading: !kIsWeb);
 
 	}
 
-	_buildBody() {
+	Widget _buildBody() {
 
 		return SimpleForm(
 			formStateKey: formState,
@@ -92,12 +94,54 @@ class _StandardFormState extends State<StandardForm> {
 
 	}
 
-	_buildBottomButton(BuildContext context) {
+	Widget? _buildBottomButtons(BuildContext context) {
 
-		if (widget.onSave == null) {
-			return null;
+		List<Widget> buttons = [];
+
+		if (widget.onSave != null) {
+			buttons.add(_buildSaveButton(context));
 		}
-		
+
+		if (kIsWeb) {
+			buttons.add(_buildCancelButton(context));
+		}
+
+		if (buttons.length == 1) {
+
+			return buttons[0];
+
+		} else if (buttons.length > 1) {
+
+			return Flex(
+				direction: Axis.horizontal,
+				//crossAxisAlignment: CrossAxisAlignment.end,
+				mainAxisAlignment: MainAxisAlignment.end,
+				//mainAxisSize: MainAxisSize.min,
+				children: buttons.map((button) {
+
+					if (kIsWeb) {
+						return Padding(
+							padding: const EdgeInsets.only(
+								top: 5,
+								right: 5,
+								bottom: 5,
+							),
+							child: button,
+						);
+					}
+
+					return button;
+
+				}).toList()
+			);
+
+		}
+
+		return null;
+	}
+
+	Widget _buildSaveButton(BuildContext context) {
+
 		return BottomButton(
 			child: widget.bottomButtonChild ?? const Text('SALVAR'),
 			onPressed: () => _save(context),
@@ -105,7 +149,16 @@ class _StandardFormState extends State<StandardForm> {
 
 	}
 
-	_save(BuildContext context) async {
+	Widget _buildCancelButton(BuildContext context) {
+
+		return BottomButton(
+			child: widget.bottomButtonChild ?? const Text('CANCELAR'),
+			onPressed: () => _cancel(context),
+		);
+
+	}
+
+	void _save(BuildContext context) async {
 
 		if (formState.currentState == null || !formState.currentState!.validate()) {
 			return;
@@ -117,12 +170,13 @@ class _StandardFormState extends State<StandardForm> {
 
 		showAwaitDialog(context, message: Text(SimpleAppLocalization.of(context)[SimpleAppLocalizationEnum.saving]), function: (context, updateMessage) async {
 	
-			return widget.onSave!(context, formValues)
+			var result = await widget.onSave!(context, formValues)
 				.catchError((onError) async {
 					if (widget.processError != null) {
 						await widget.processError!(context, onError);
 					}
 				});
+			return result;
 
 		}).then((savedData) {
 	
@@ -133,4 +187,9 @@ class _StandardFormState extends State<StandardForm> {
 		});
 
 	}
+
+	void _cancel(BuildContext context) {
+		Navigator.pop(context);
+	}
+
 }

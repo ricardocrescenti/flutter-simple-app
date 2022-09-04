@@ -28,6 +28,11 @@ dependencies:
     #   url: https://github.com/ricardocrescenti/flutter-simple-form.git
     #   ref: master
   standard_dialogs: ^2.0.0
+  useful_api: #^1.0.0
+    path: '../flutter-useful-api'
+    # git: 
+    #   url: https://github.com/ricardocrescenti/flutter-useful-api.git
+    #   ref: master
   useful_classes: ^3.0.0+1
   useful_widgets: #^1.0.0
     path: '../flutter-useful-widgets'

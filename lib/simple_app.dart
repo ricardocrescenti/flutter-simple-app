@@ -18,5 +18,6 @@ export 'package:module_provider/module_provider.dart';
 export 'package:simple_localization/simple_localization.dart';
 export 'package:simple_form/simple_form.dart';
 export 'package:standard_dialogs/standard_dialogs.dart';
+export 'package:useful_api/useful_api.dart';
 export 'package:useful_widgets/useful_widgets.dart';
 export 'package:useful_classes/useful_classes.dart';
